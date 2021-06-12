@@ -56,4 +56,54 @@ module ShopifyClient
       "#<ShopifyClient::Response (#{status_code}, #{request.inspect})>"
     end
   end
+
+  class Response
+    # @!attribute [r] request
+    #   @return [Request]
+    # @!attribute [r] response
+    #   @return [Response]
+    class Error < Error
+      # @param request [Request]
+      # @param request [Response]
+      def initialize(request, response)
+        @request = request
+        @response = response
+      end
+
+      attr_reader :request
+      attr_reader :response
+
+      # @return [String]
+      def message
+        if response.errors?
+          "bad response (#{response.status_code}): #{response.error_messages.first}"
+        else
+          "bad response (#{response.status_code})"
+        end
+      end
+    end
+
+    # Client errors in the range 4xx.
+    ClientError = Class.new(Error)
+    # Server errors in the range 5xx.
+    ServerError = Class.new(Error)
+    # The access token was not accepted.
+    InvalidAccessTokenError = Class.new(ClientError)
+    # The shop is frozen/locked/unavailable.
+    ShopError = Class.new(ClientError)
+
+    # The GraphQL API always responds with a status code of 200.
+    GraphQLClientError = Class.new(ClientError) do
+      def message
+        case
+        when response.errors?
+          "bad response: #{response.error_messages.first}"
+        when response.user_errors?
+          "bad response: #{response.user_error_messages.first}"
+        else
+          "bad response"
+        end
+      end
+    end
+  end
 end
