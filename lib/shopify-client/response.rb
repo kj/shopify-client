@@ -189,7 +189,7 @@ module ShopifyClient
     #   @return [Response]
     class Error < Error
       # @param request [Request]
-      # @param request [Response]
+      # @param response [Response]
       def initialize(request, response)
         @request = request
         @response = response
@@ -208,9 +208,9 @@ module ShopifyClient
       end
     end
 
-    # Client errors in the range 4xx.
+    # Client errors in the 4xx range.
     ClientError = Class.new(Error)
-    # Server errors in the range 5xx.
+    # Server errors in the 5xx range.
     ServerError = Class.new(Error)
     # The access token was not accepted.
     InvalidAccessTokenError = Class.new(ClientError)
