@@ -24,6 +24,11 @@ module ShopifyClient
     :headers,
     :data
   ) do
+    # @return [Boolean]
+    def graphql?
+      path == '/graphql.json'
+    end
+
     # @return [String]
     def inspect
       "#<ShopifyClient::Request (#{myshopify_domain}#{path})>"
