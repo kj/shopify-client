@@ -23,5 +23,10 @@ module ShopifyClient
     def to_json(*args)
       to_h.to_json(*args)
     end
+
+    # @return [String]
+    def inspect
+      "#<ShopifyClient::Webhook (#{myshopify_domain}, #{topic})>"
+    end
   end
 end

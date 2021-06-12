@@ -39,8 +39,21 @@ module ShopifyClient
           faraday_response.status,
           faraday_response.headers,
           faraday_response.body,
-        )
+        ).tap(&:assert!)
       end
+    end
+
+    # @raise [ClientError] for status 4xx
+    # @raise [ServerError] for status 5xx
+    #
+    # @see https://shopify.dev/concepts/about-apis/response-codes
+    def assert!
+      # TODO
+    end
+
+    # @return [String]
+    def inspect
+      "#<ShopifyClient::Response (#{status_code}, #{request.inspect})>"
     end
   end
 end

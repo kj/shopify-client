@@ -19,9 +19,14 @@ module ShopifyClient
     :myshopify_domain,
     :access_token,
     :method,
-    :uri,
+    :path,
     :params,
     :headers,
     :data
-  )
+  ) do
+    # @return [String]
+    def inspect
+      "#<ShopifyClient::Request (#{myshopify_domain}#{path})>"
+    end
+  end
 end

@@ -4,6 +4,10 @@ require 'faraday'
 require 'faraday_middleware'
 
 module ShopifyClient
+  # @!attribute [r] myshopify_domain
+  #   @return [String]
+  # @!attribute [r] access_token
+  #   @return [String]
   class Client
     # @param myshopify_domain [String]
     # @param access_token [String, nil] if request is authenticated
@@ -46,11 +50,15 @@ module ShopifyClient
             end
           end
         end)
-        conn.use Faraday::Response::RaiseError
         conn.use FaradayMiddleware::EncodeJson
         conn.use FaradayMiddleware::ParseJson, content_type: 'application/json'
       end
+
+      @myshopify_domain = myshopify_domain
     end
+
+    attr_reader :myshopify_domain
+    attr_reader :access_token
 
     # @see Faraday::Connection#delete
     #
@@ -89,6 +97,11 @@ module ShopifyClient
         query: query,
         variables: variables,
       }))
+    end
+
+    # @return [String]
+    def inspect
+      "#<ShopifyClient::Client (#{@myshopify_domain})>"
     end
   end
 end
