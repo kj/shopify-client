@@ -86,7 +86,7 @@ module ShopifyClient
       data.has_key?('errors') # should be only on 422
     end
 
-    # GraphQL user errors.
+    # GraphQL user errors (errors in mutation input).
     #
     # @return [Boolean]
     def user_errors?
@@ -132,7 +132,7 @@ module ShopifyClient
       end
     end
 
-    # GraphQL user errors.
+    # GraphQL user errors (errors in mutation input).
     #
     # @return [Hash]
     def user_errors
