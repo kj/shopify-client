@@ -81,6 +81,33 @@ module ShopifyClient
       end
     end
 
+    # @return [Hash]
+    private def link
+      @link ||= ParseLinkHeader.new.(headers['Link'])
+    end
+
+    # Request the next page for a GET request, if any.
+    #
+    # @param [Client]
+    #
+    # @return [Response, nil]
+    def next_page(client)
+      return nil unless link[:next]
+
+      client.get(request.path, link[:next])
+    end
+
+    # Request the next page for a GET request, if any.
+    #
+    # @param [Client]
+    #
+    # @return [Response, nil]
+    def previous_page(client)
+      return nil unless link[:previous]
+
+      client.get(request.path, link[:previous])
+    end
+
     # Response errors (usually included with a 422 response).
     #
     # @return [ResponseErrors]
