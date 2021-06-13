@@ -81,99 +81,32 @@ module ShopifyClient
       end
     end
 
+    # Response errors (usually included with a 422 response).
+    #
+    # @return [ResponseErrors]
+    def errors
+      @errors ||= ResponseErrors.from_response_data(data)
+    end
+
     # @return [Boolean]
     def errors?
-      data.has_key?('errors') # should be only on 422
+      errors.any?
     end
 
     # GraphQL user errors (errors in mutation input).
     #
-    # @return [Boolean]
-    def user_errors?
-      errors = find_user_errors
-
-      !errors.nil? && !errors.empty?
-    end
-
-    # GraphQL user errors (find recursively).
-    #
-    # @param hash [Hash]
-    #
-    # @return [Array, nil]
-    private def find_user_errors(hash = data)
+    # @return [ResponseUserErrors, nil]
+    def user_errors
       return nil unless request.graphql?
 
-      hash.each do |key, value|
-        return value if key == 'userErrors'
-
-        if value.is_a?(Hash)
-          errors = find_user_errors(value)
-
-          return errors if errors
-        end
-      end
-
-      nil
+      @user_errors ||= ResponseUserErrors.from_response_data(data)
     end
 
-    # A string rather than an object is returned by Shopify in the case of,
-    # e.g., 'Not found'. In this case, it is set under the 'resource' key.
-    #
-    # @return [Hash]
-    def errors
-      errors = data['errors']
-      case
-      when errors.nil?
-        {}
-      when errors.is_a?(String)
-        {'resource' => errors}
-      else
-        errors
-      end
-    end
-
-    # GraphQL user errors (errors in mutation input).
-    #
-    # @return [Hash]
-    def user_errors
-      errors = find_user_errors
-      return {} if errors.nil? || errors.empty?
-      errors.map do |error|
-        [
-          error['field'] ? error['field'].join('.') : '.',
-          error['message'],
-        ]
-      end.to_h
-    end
-
-    # @return [Array<String>]
-    def error_messages
-      errors.map do |field, message|
-        "#{message} [#{field}]"
-      end
-    end
-
-    # @return [Array<String>]
-    def user_error_messages
-      user_errors.map do |field, message|
-        "#{message} [#{field}]"
-      end
-    end
-
-    # @param messages [Array<Regexp, String>]
-    #
     # @return [Boolean]
-    def error_message?(messages)
-      all_messages = error_messages + user_error_messages
+    def user_errors?
+      return false unless request.graphql?
 
-      messages.any? do |message|
-        case message
-        when Regexp
-          all_messages.any? { |other_message| other_message.match?(message) }
-        when String
-          all_messages.include?(message)
-        end
-      end
+      user_errors.any?
     end
 
     # @return [String]
