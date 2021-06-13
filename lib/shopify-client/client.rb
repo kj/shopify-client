@@ -99,6 +99,18 @@ module ShopifyClient
       }))
     end
 
+    # If called with a block, calls {BulkRequest::Operation#call} immediately,
+    # else, returns the {BulkRequest::Operation}.
+    #
+    # @param query [String] the GraphQL query
+    #
+    # @return [Operation]
+    def bulk(query, &block)
+      op = BulkRequest.new.(self, query)
+
+      block ? op.(&block) : op
+    end
+
     # @return [String]
     def inspect
       "#<ShopifyClient::Client (#{@myshopify_domain})>"
