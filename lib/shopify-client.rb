@@ -18,6 +18,7 @@ module ShopifyClient
 
   setting :api_key
   setting :api_version, '2021-04'
+  setting :cache_ttl, 3600
   setting :logger, Logger.new(File::NULL).freeze
   setting :oauth_redirect_uri
   setting :oauth_scope

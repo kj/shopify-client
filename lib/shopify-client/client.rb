@@ -18,11 +18,8 @@ module ShopifyClient
         },
         url: "https://#{myshopify_domain}/admin/api/#{ShopifyClient.config.api_version}",
       ) do |conn|
-        if defined?(Redis)
-          conn.use Throttling::RedisStrategy
-        else
-          conn.use Throttling::ThreadLocalStrategy
-        end
+        # Request throttling to avoid API rate limit.
+        conn.use default_throttling_strategy
         # Retry for 429, too many requests.
         conn.use Faraday::Request::Retry, {
           backoff_factor: 2,
@@ -55,6 +52,15 @@ module ShopifyClient
       end
 
       @myshopify_domain = myshopify_domain
+    end
+
+    # @return [Throttling::Strategy]
+    def default_throttling_strategy
+      if defined?(Redis)
+        Throttling::RedisStrategy
+      else
+        Throttling::ThreadLocalStrategy
+      end
     end
 
     attr_reader :myshopify_domain
