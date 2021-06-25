@@ -53,7 +53,7 @@ module ShopifyClient
     def assert!
       case status_code
       when 401
-        if error_message?([/access token/i])
+        if errors.message?([/access token/i])
           raise InvalidAccessTokenError.new(request, self), 'Invalid access token'
         else
           raise ClientError.new(request, self)
@@ -62,7 +62,7 @@ module ShopifyClient
         raise ShopError.new(request, self), 'Shop is frozen, awaiting payment'
       when 403
         # NOTE: Not sure what this one means (undocumented).
-        if error_message?([/unavailable shop/i])
+        if errors.message?([/unavailable shop/i])
           raise ShopError.new(request, self), 'Shop is unavailable'
         else
           raise ClientError.new(request, self)
@@ -161,7 +161,7 @@ module ShopifyClient
       # @return [String]
       def message
         if response.errors?
-          "bad response (#{response.status_code}): #{response.error_messages.first}"
+          "bad response (#{response.status_code}): #{response.errors.messages.first}"
         else
           "bad response (#{response.status_code})"
         end
@@ -182,9 +182,9 @@ module ShopifyClient
       def message
         case
         when response.errors?
-          "bad response: #{response.error_messages.first}"
+          "bad response: #{response.errors.messages.first}"
         when response.user_errors?
-          "bad response: #{response.user_error_messages.first}"
+          "bad response: #{response.user_errors.messages.first}"
         else
           "bad response"
         end

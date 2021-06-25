@@ -13,7 +13,7 @@ module ShopifyClient
         address: ShopifyClient.config.webhook_uri,
       ))
     rescue Response::Error => e
-      raise e unless e.response.error_message?([
+      raise e unless e.response.errors.message?([
         /has already been taken/,
       ])
     end

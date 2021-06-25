@@ -52,6 +52,7 @@ module ShopifyClient
       end
 
       @myshopify_domain = myshopify_domain
+      @access_token = access_token
     end
 
     # @return [Throttling::Strategy]
