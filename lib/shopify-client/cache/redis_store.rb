@@ -13,7 +13,10 @@ module ShopifyClient
       # @see Store#set
       def set(key, value, ttl: ShopifyClient.config.cache_ttl)
         Redis.current.set(key, @encode.(value))
-        Redis.current.expire(key, ttl)
+
+        if ttl > 0
+          Redis.current.expire(key, ttl)
+        end
       end
 
       # @see Store#clear

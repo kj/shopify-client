@@ -27,11 +27,7 @@ module ShopifyClient
       #
       # @return [Object]
       def call(key, ttl: ShopifyClient.config.cache_ttl, &block)
-        if expired?(key, ttl)
-          value = get(key)
-        else
-          value = nil
-        end
+        value = get(key)
 
         if value.nil?
           value = block.()
@@ -40,17 +36,6 @@ module ShopifyClient
         end
 
         value
-      end
-
-      # Override for custom expiry check, otherwise always false. For example,
-      # Redis checks key expiry automatically, so a separate check is redundant.
-      #
-      # @param key [String]
-      # @param ttl [Integer] in seconds
-      #
-      # @return [Boolean]
-      private def expired?(key, ttl)
-        false
       end
 
       # Get cached data, or nil if unset.
