@@ -83,7 +83,7 @@ module ShopifyClient
 
     # @return [Hash]
     private def link
-      @link ||= ParseLinkHeader.new.(headers['Link'])
+      @link ||= ParseLinkHeader.new.(headers['Link'] || '')
     end
 
     # Request the next page for a GET request, if any.
