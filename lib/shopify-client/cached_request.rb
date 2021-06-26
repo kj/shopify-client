@@ -10,12 +10,12 @@ module ShopifyClient
   #   get_shop.(client) # not cached, makes API request
   #   get_shop.(client) # cached
   class CachedRequest
-    # @param request_path [String]
-    # @param request_params [Hash]
+    # @param path [String]
+    # @param params [Hash]
     # @param store [Cache::Store]
-    def initialize(request_path, request_params = {}, store: default_store)
-      @request_path = request_path
-      @request_params = request_params
+    def initialize(path, params: {}, store: default_store)
+      @path = path
+      @params = params
       @store = store
     end
 
@@ -33,7 +33,7 @@ module ShopifyClient
     # @return [Hash] response data
     def call(client)
       @store.(build_key(client.myshopify_domain)) do
-        client.get(@request_path, @request_params).data
+        client.get(@path, @params).data
       end
     end
 
@@ -45,8 +45,8 @@ module ShopifyClient
 
       format('shopify-client:cached_request:%s', Digest::SHA256.hexdigest([
         myshopify_domain,
-        @request_path,
-        @request_params.sort,
+        @path,
+        @params.sort,
       ].join(separator)))
     end
 

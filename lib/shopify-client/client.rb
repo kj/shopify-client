@@ -76,6 +76,11 @@ module ShopifyClient
       Response.from_faraday_response(@conn.get(...))
     end
 
+    # @see CachedRequest#initialize
+    def get_cached(...)
+      CachedRequest.new(...).(self)
+    end
+
     # @see Faraday::Connection#post
     #
     # @return [Response]
@@ -107,7 +112,7 @@ module ShopifyClient
     # @param query [String] the GraphQL query
     #
     # @return [Operation]
-    def bulk(query, &block)
+    def graphql_bulk(query, &block)
       op = BulkRequest.new.(self, query)
 
       block ? op.(&block) : op
