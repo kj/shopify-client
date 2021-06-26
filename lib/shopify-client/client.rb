@@ -40,13 +40,7 @@ module ShopifyClient
           retry_statuses: (500..599).to_a,
         }
         # Add .json suffix if not present (all endpoints use this).
-        conn.use(Class.new(Faraday::Middleware) do
-          def on_request(env)
-            unless env[:url].path.end_with?('.json')
-              env[:url].path += '.json'
-            end
-          end
-        end)
+        conn.use NormalisePath
         conn.use FaradayMiddleware::EncodeJson
         conn.use FaradayMiddleware::ParseJson, content_type: 'application/json'
       end
