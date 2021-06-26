@@ -39,10 +39,11 @@ module ShopifyClient
           interval: 0.5,
           retry_statuses: (500..599).to_a,
         }
-        # Add .json suffix if not present (all endpoints use this).
-        conn.use NormalisePath
         conn.use FaradayMiddleware::EncodeJson
         conn.use FaradayMiddleware::ParseJson, content_type: 'application/json'
+        # Add .json suffix if not present (all endpoints use this).
+        conn.use NormalisePath
+        conn.use Logging
       end
 
       @myshopify_domain = myshopify_domain
