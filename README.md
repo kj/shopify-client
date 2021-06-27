@@ -119,8 +119,8 @@ than a `Response` object.
 
 Making the same call with the same shop/client, will result in the data being
 returned straight from the cache on subsequent calls, until the configured TTL
-expires. If you're using Redis, it will be used as the cache store; otherwise,
-the cache will be stored in a thread local variable.
+expires (the default TTL is 1 hour). If you're using Redis, it will be used as
+the cache store; otherwise, the cache will be stored in a thread local variable.
 
 You can also manually build and clear a cached request. For example, you might
 need to clear the cache without waiting for the TTL if you receive an update
