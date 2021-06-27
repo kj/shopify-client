@@ -10,13 +10,16 @@ shopify-client
     * [Make cached API requests](#make-cached-api-requests)
     * [Pagination](#pagination)
 4. [Authorisation](#authorisation)
-5. [Webhooks](#webhooks)
+5. [Cookieless authentication](#cookieless-authentication)
+    * [Rack middleware](#rack-middleware)
+    * [Manual check](#manual-check)
+6. [Webhooks](#webhooks)
     * [Configure webhooks](#configure-webhooks)
     * [Create and delete webhooks](#create-and-delete-webhooks)
-6. [Verification](#verification)
+7. [Verification](#verification)
     * [Verify callbacks](#verify-callbacks)
     * [Verify webhooks](#verify-webhooks)
-7. [Mixins](#mixins)
+8. [Mixins](#mixins)
     * [Read a resource](#read-a-resource)
     * [Create a resource](#create-a-resource)
     * [Update a resource](#update-a-resource)
@@ -172,6 +175,40 @@ Once the user returns to the app, exchange the authorisation code for an access
 token:
 
     access_token = authorise.(client, authorisation_code)
+
+
+Cookieless authentication
+-------------------------
+
+Embedded apps using App Bridge are required to use the cookieless authentication
+system which uses JWT session tokens rather than cookies to authenticate users
+signed into the Shopify admin.
+
+
+### Rack middleware
+
+In config.ru, or wherever you set up your middleware stack:
+
+    use ShopifyClient::Cookieless::Middleware
+
+You can also control when session tokens are checked with a predicate (such as
+only for certain paths):
+
+    use ShopifyClient::Cookieless::Middleware, is_authenticated: ->(env) do
+      # ...
+    end
+
+
+### Manual check
+
+You can also check the Authorization header manually, if you require more
+control than the middleware provides:
+
+    begin
+      ShopifyClient::Cookieless::CheckHeader.new.(env)
+    rescue ShopifyClient::Error => e
+      # ...
+    end
 
 
 Webhooks

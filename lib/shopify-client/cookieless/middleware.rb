@@ -10,19 +10,19 @@ module ShopifyClient
     # Returns a 401 response if a request is unauthorised.
     class Middleware
       # @param app [#call]
-      # @param should_check [#call]
+      # @param is_authenticated [#call]
       #   predicate for deciding when the request should be checked
-      def initialize(app, should_check: ->(env) { true })
+      def initialize(app, is_authenticated: ->(env) { true })
         @app = app
 
-        @should_check = should_check
+        @is_authenticated = is_authenticated
       end
 
       # @param env [Hash]
       #
       # @param [Array<Integer, Hash{String => String}, Array<String>]
       def call(env)
-        CheckHeader.new.(env) if @should_check.(env)
+        CheckHeader.new.(env) if @is_authenticated.(env)
 
         @app.call(env)
       rescue UnauthorisedError
