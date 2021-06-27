@@ -16,6 +16,11 @@ shopify-client
 6. [Verification](#verification)
     * [Verify callbacks](#verify-callbacks)
     * [Verify webhooks](#verify-webhooks)
+7. [Mixins](#mixins)
+    * [Read a resource](#read-a-resource)
+    * [Create a resource](#create-a-resource)
+    * [Update a resource](#update-a-resource)
+    * [Delete a resource](#delete-a-resource)
 
 
 Installation
@@ -227,3 +232,73 @@ Verify webhook requests with the request data and the HMAC header:
     rescue ShopifyClient::Error => e
       # ...
     end
+
+
+Mixins
+------
+
+A set of mixins is provided for easily creating repository classes for API
+resources. Each mixin represents an operation or a set of operations, e.g.
+reading and writing data to/from the API.
+
+
+### Read a resource
+
+    class OrderRepository
+      include ShopifyClient::Resource::Read
+
+      resource :orders
+
+      default_params fields: 'id,tags', limit: 250
+    end
+
+    order_repo = OrderRepository.new
+
+Find a single result:
+
+    order_repo.find_by_id(client, id)
+
+Iterate over results (automatic pagination):
+
+    order_repo.all.each do |order|
+      # ...
+    end
+
+
+### Create a resource
+
+    class OrderRepository
+      include ShopifyClient::Resource::Create
+
+      resource :orders
+    end
+
+    order_repo = OrderRepository.new
+
+    order_repo.create(client, new_order)
+
+
+### Update a resource
+
+    class OrderRepository
+      include ShopifyClient::Resource::Update
+
+      resource :orders
+    end
+
+    order_repo = OrderRepository.new
+
+    order_repo.update(client, id, order)
+
+
+### Delete a resource
+
+    class OrderRepository
+      include ShopifyClient::Resource::Delete
+
+      resource :orders
+    end
+
+    order_repo = OrderRepository.new
+
+    order_repo.delete(client, id)
