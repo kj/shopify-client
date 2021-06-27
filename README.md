@@ -9,7 +9,7 @@ shopify-client
     * [Make bulk API requests](#make-bulk-api-requests)
     * [Make cached API requests](#make-cached-api-requests)
     * [Pagination](#pagination)
-4. [Authorisation](#authorisation)
+4. [OAuth](#oauth)
 5. [Cookieless authentication](#cookieless-authentication)
     * [Rack middleware](#rack-middleware)
     * [Manual check](#manual-check)
@@ -162,8 +162,8 @@ directly from the response object.
 When no page is available, `nil` will be returned.
 
 
-Authorisation
--------------
+OAuth
+-----
 
 Redirect unauthorised users through the Shopify OAuth flow:
 
