@@ -7,6 +7,7 @@ shopify-client
 3. [Calling the API](#calling-the-api)
     * [Make API requests](#make-api-requests)
     * [Make bulk API requests](#make-bulk-api-requests)
+    * [Make cached API requests](#make-cached-api-requests)
     * [Pagination](#pagination)
 4. [Authorisation](#authorisation)
 5. [Webhooks](#webhooks)
@@ -20,7 +21,7 @@ shopify-client
 Installation
 ------------
 
-Add the gem to your ‘Gemfile’:
+Add the gem to your 'Gemfile':
 
     gem 'shopify-client'
 
@@ -105,6 +106,40 @@ and yielding each line of the result to limit memory usage.
 
 Bulk requests are limited to one per shop at any one time. Creating a new bulk
 request via the gem will cancel any request in progress for the shop.
+
+
+### Make cached API requests
+
+Make a cached GET request:
+
+    client.get_cached('orders', params: {since_id: since_id})
+
+Note that unlike `#get`, `#get_cached` returns the `Response#data` hash rather
+than a `Response` object.
+
+Making the same call with the same shop/client, will result in the data being
+returned straight from the cache on subsequent calls, until the configured TTL
+expires. If you're using Redis, it will be used as the cache store; otherwise,
+the cache will be stored in a thread local variable.
+
+You can also manually build and clear a cached request. For example, you might
+need to clear the cache without waiting for the TTL if you receive an update
+webhook indicating that the cached data is obsolete:
+
+    get_shop = ShopifyClient::CachedRequest.new('shop')
+
+    # Request shop data (from API).
+    get_shop.(client)
+    # Request shop data (from cache).
+    get_shop.(client)
+
+Clear the cache data to force fetch from API on next access:
+
+    get_shop.clear(myshopify_domain)
+
+Set the cache data (e.g. from shop/update webhook body):
+
+    get_shop.set(myshopify_domain, new_shop)
 
 
 ### Pagination
