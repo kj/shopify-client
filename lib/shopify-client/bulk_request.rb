@@ -57,8 +57,8 @@ module ShopifyClient
 
         begin
           file = Tempfile.new(mode: 0600)
-          Faraday.get(url) do |req|
-            req.options.on_data = ->(chunk, _) do
+          Faraday.get(url) do |request|
+            request.options.on_data = ->(chunk, _) do
               file.write(chunk)
             end
           end

@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'dry-configurable', '~> 0.12'
   s.add_runtime_dependency 'faraday', '~> 1.4'
   s.add_runtime_dependency 'faraday_middleware', '~> 1.0' # JSON middleware
+  s.add_runtime_dependency 'jwt', '~> 2.2'
   s.add_runtime_dependency 'zeitwerk', '~> 2.4'
   s.author = 'Kelsey Judson'
   s.email = 'kelsey@kelseyjudson.dev'
