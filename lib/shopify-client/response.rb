@@ -17,9 +17,10 @@ module ShopifyClient
   class Response
     class << self
       # @param faraday_response [Faraday::Response]
+      # @param client [Client]
       #
       # @return [Response]
-      def from_faraday_response(faraday_response)
+      def from_faraday_response(faraday_response, client = nil)
         uri = Addressable::URI.parse(faraday_response.env[:url])
 
         new(
@@ -38,6 +39,8 @@ module ShopifyClient
             faraday_response.env[:request_headers],
             # Request data.
             faraday_response.env[:request_body],
+            # Client used for the request.
+            client,
           ),
           faraday_response.status,
           faraday_response.headers,
@@ -91,7 +94,9 @@ module ShopifyClient
     # @param [Client]
     #
     # @return [Response, nil]
-    def next_page(client)
+    def next_page(client = request.client)
+      raise ArgumentError, 'missing client' if client.nil?
+
       return nil unless link[:next]
 
       client.get(request.path, link[:next])
@@ -102,7 +107,9 @@ module ShopifyClient
     # @param [Client]
     #
     # @return [Response, nil]
-    def previous_page(client)
+    def previous_page(client = request.client)
+      raise ArgumentError, 'missing client' if client.nil?
+
       return nil unless link[:previous]
 
       client.get(request.path, link[:previous])

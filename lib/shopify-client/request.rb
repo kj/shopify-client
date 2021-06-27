@@ -15,6 +15,8 @@ module ShopifyClient
   #   @return [Hash]
   # @!attribute [rw] data
   #   @return [Hash, nil]
+  # @!attribute [rw] client
+  #   @return [Client, nil]
   Request = Struct.new(
     :myshopify_domain,
     :access_token,
@@ -22,7 +24,8 @@ module ShopifyClient
     :path,
     :params,
     :headers,
-    :data
+    :data,
+    :client,
   ) do
     # @return [Boolean]
     def graphql?

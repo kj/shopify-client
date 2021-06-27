@@ -66,14 +66,14 @@ module ShopifyClient
     #
     # @return [Response]
     def delete(...)
-      Response.from_faraday_response(@conn.delete(...))
+      Response.from_faraday_response(@conn.delete(...), self)
     end
 
     # @see Faraday::Connection#get
     #
     # @return [Response]
     def get(...)
-      Response.from_faraday_response(@conn.get(...))
+      Response.from_faraday_response(@conn.get(...), self)
     end
 
     # @see CachedRequest#initialize
@@ -85,14 +85,14 @@ module ShopifyClient
     #
     # @return [Response]
     def post(...)
-      Response.from_faraday_response(@conn.post(...))
+      Response.from_faraday_response(@conn.post(...), self)
     end
 
     # @see Faraday::Connection#put
     #
     # @return [Response]
     def put(...)
-      Response.from_faraday_response(@conn.put(...))
+      Response.from_faraday_response(@conn.put(...), self)
     end
 
     # @param query [String] the GraphQL query
@@ -103,7 +103,7 @@ module ShopifyClient
       Response.from_faraday_response(@conn.post('graphql', {
         query: query,
         variables: variables,
-      }))
+      }), self)
     end
 
     # If called with a block, calls {BulkRequest::Operation#call} immediately,

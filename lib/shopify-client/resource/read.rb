@@ -60,7 +60,7 @@ module ShopifyClient
           loop do
             response.data[resource_name].each { |result| yielder << result }
 
-            response = response.next_page(client) || break
+            response = response.next_page || break
           end
         end
       end
