@@ -2,6 +2,7 @@
 
 require 'faraday'
 require 'json'
+require 'tempfile'
 require 'timeout'
 
 module ShopifyClient
@@ -55,8 +56,9 @@ module ShopifyClient
 
         return if url.nil?
 
+        file = Tempfile.new(mode: 0600)
+
         begin
-          file = Tempfile.new(mode: 0600)
           Faraday.get(url) do |request|
             request.options.on_data = ->(chunk, _) do
               file.write(chunk)

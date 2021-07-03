@@ -63,7 +63,7 @@ Calling the API
 
     client.get('orders', since_id: since_id).data['orders']
     client.post('orders', order: new_order)
-    client.graphql(<<~QUERY).data['data']['orders']
+    client.graphql(%(
       {
         orders(first: 10) {
           edges {
@@ -74,7 +74,7 @@ Calling the API
           }
         }
       }
-    QUERY
+    )).data['data']['orders']
 
 Request logging is disabled by default. To enable it:
 
@@ -88,9 +88,10 @@ across a single thread.
 ### Make bulk API requests
 
 The gem wraps Shopify's bulk query API by writing the result to a temporary file
-and yielding each line of the result to limit memory usage.
+and yielding an enumerator which itself streams each line of the result to limit
+memory usage.
 
-    client.grahql_bulk(<<~QUERY) do |products|
+    client.grahql_bulk(%(
       {
         products {
           edges {
@@ -101,9 +102,9 @@ and yielding each line of the result to limit memory usage.
           }
         }
       }
-    QUERY
+    )) do |lines|
       db.transaction do
-        products.each do |product|
+        lines.each do |product|
           db[:products].insert(
             id: product['id'],
             handle: product['handle'],
