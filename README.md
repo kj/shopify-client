@@ -46,7 +46,7 @@ Setup
       config.api_version = '...' # e.g. '2021-04'
       config.cache_ttl = 3600
       config.redirect_uri = '...' # for OAuth
-      config.logger = Logger.new(STDOUT) # defaults to a null logger
+      config.logger = Logger.new($stdout) # defaults to a null logger
       config.scope = '...'
       config.shared_secret = '...'
       config.webhook_uri = '...'
@@ -80,7 +80,7 @@ Calling the API
 
 Request logging is disabled by default. To enable it:
 
-    ShopifyClient.config.logger = Logger.new(STDOUT)
+    ShopifyClient.config.logger = Logger.new($stdout)
 
 Request throttling is enabled by default. If you're using Redis, throttling will
 automatically make use of it; otherwise, throttling will only be maintained
