@@ -93,7 +93,7 @@ The gem wraps Shopify's bulk query API by writing the result to a temporary file
 and yielding an enumerator which itself streams each line of the result to limit
 memory usage.
 
-    client.grahql_bulk(%(
+    client.graphql_bulk(%(
       {
         products {
           edges {
