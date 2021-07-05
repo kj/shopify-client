@@ -300,7 +300,7 @@ Find a single result:
 
 Iterate over results (automatic pagination):
 
-    order_repo.all.each do |order|
+    order_repo.all(client).each do |order|
       # ...
     end
 
