@@ -26,7 +26,7 @@ module ShopifyClient
         time4 = Time.now
 
         expect(data2['shop'].keys).to contain_exactly('id', 'domain')
-        expect(time4 - time3).to be < 0.001
+        expect(time4 - time3).to be < 0.005
       end
 
       example 'with CachedRequest' do
@@ -44,7 +44,7 @@ module ShopifyClient
         time4 = Time.now
 
         expect(data2['shop'].keys).to contain_exactly('id', 'domain')
-        expect(time4 - time3).to be < 0.001
+        expect(time4 - time3).to be < 0.005
 
         get_shop.clear($shop)
 

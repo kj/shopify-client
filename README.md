@@ -24,6 +24,8 @@ shopify-client
     * [Create a resource](#create-a-resource)
     * [Update a resource](#update-a-resource)
     * [Delete a resource](#delete-a-resource)
+9. [Testing](#testing)
+    * [Integration tests](#integration-tests)
 
 
 Installation
@@ -340,3 +342,19 @@ Iterate over results (automatic pagination):
     order_repo = OrderRepository.new
 
     order_repo.delete(client, id)
+
+
+Testing
+-------
+
+### Integration tests
+
+The integration tests require a private app with the scope `write_products`.
+Create a .env file specifying the test shop and private app password:
+
+    TEST_SHOP='test-shop.myshopify.com'
+    TEST_PASSWORD='shppa_...'
+
+Run the suite:
+
+    $ bundle exec rake test:integration
