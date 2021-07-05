@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shopify-client (0.0.1)
+    shopify-client (0.0.2)
       addressable (~> 2.7)
       dry-configurable (~> 0.12)
       faraday (~> 1.4)

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.author = 'Kelsey Judson'
   s.email = 'kelsey@kelseyjudson.dev'
   s.files = Dir.glob('lib/**/*') + %w[README.md]
-  s.homepage = 'https://gitea.judson.nz/shopify-apps/shopify-client'
+  s.homepage = 'https://github.com/kj/shopify-client'
   s.license = 'ISC'
   s.name = 'shopify-client'
   s.summary = 'Shopify client library'
