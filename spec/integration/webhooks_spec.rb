@@ -5,8 +5,12 @@ module ShopifyClient
     let(:client) { Client.new($shop, $password) }
 
     before do
-      %w[create update delete].each do |topic|
-        ShopifyClient.webhooks.register("products/#{topic}", proc {}, fields: %w[id handle])
+      {
+        create: %w[id handle],
+        update: %w[id handle],
+        delete: [],
+      }.each do |topic, fields|
+        ShopifyClient.webhooks.register("products/#{topic}", proc {}, fields: fields)
       end
     end
 
