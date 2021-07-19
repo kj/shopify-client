@@ -29,7 +29,7 @@ module ShopifyClient
     example_group 'writing', order: :defined do
       id = nil
 
-      example 'Make a POST request' do
+      example 'make a POST request' do
         response = client.post('products', product: {
           title: 'Test product',
         })
@@ -40,7 +40,7 @@ module ShopifyClient
         expect(id).to be_a(Integer)
       end
 
-      example 'Make a PUT request' do
+      example 'make a PUT request' do
         skip if id.nil?
 
         response = client.put("products/#{id}", product: {
@@ -51,7 +51,7 @@ module ShopifyClient
         expect(response.status_code).to be(200)
       end
 
-      example 'Make a DELETE request' do
+      example 'make a DELETE request' do
         skip if id.nil?
 
         response = client.delete("products/#{id}")
