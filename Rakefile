@@ -11,6 +11,7 @@ namespace :test do
     missing_env = %w[
       TEST_SHOP
       TEST_PASSWORD
+      TEST_WEBHOOK_URI
     ].select do |var|
       next if ENV[var]
 

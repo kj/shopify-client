@@ -350,10 +350,12 @@ Testing
 ### Integration tests
 
 The integration tests require a private app with the scope `write_products`.
-Create a .env file specifying the test shop and private app password:
+Create a .env file specifying the test shop, private app password, and a valid
+webhook URI:
 
     TEST_SHOP='test-shop.myshopify.com'
     TEST_PASSWORD='shppa_...'
+    TEST_WEBHOOK_URI='https://.../webhooks'
 
 Run the suite:
 

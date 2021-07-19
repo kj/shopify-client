@@ -18,5 +18,5 @@ ShopifyClient.configure do |config|
   config.oauth_redirect_uri = 'test'
   config.oauth_scope = 'test'
   config.shared_secret = 'test'
-  config.webhook_uri = 'test'
+  config.webhook_uri = ENV['TEST_WEBHOOK_URI']
 end

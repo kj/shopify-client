@@ -9,7 +9,7 @@ module ShopifyClient
     #
     # @return [Hash] response data
     def call(client, webhook)
-      client.post_json(credentials, 'webhooks', webhook: webhook.merge(
+      client.post('webhooks', webhook: webhook.merge(
         address: ShopifyClient.config.webhook_uri,
       ))
     rescue Response::Error => e

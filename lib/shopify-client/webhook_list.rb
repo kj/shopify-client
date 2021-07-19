@@ -12,7 +12,7 @@ module ShopifyClient
     # @param topic [String]
     # @param handler [#call]
     # @param fields [Array<String>] e.g. %w[id tags]
-    def register(topic, handler = nil, fields: nil, &block)
+    def register(topic, handler = nil, fields: [], &block)
       raise ArgumentError unless nil ^ handler ^ block
 
       handler = block if block

@@ -8,7 +8,7 @@ module ShopifyClient
     #
     # @return [Array<Hash>] response data
     def call(client)
-      webhooks = client.get(credentials, 'webhooks')['webhooks']
+      webhooks = client.get('webhooks').data['webhooks']
 
       delete_webhook = DeleteWebhook.new
 

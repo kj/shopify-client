@@ -7,7 +7,7 @@ module ShopifyClient
     #
     # @return [Hash] response data
     def call(client, id)
-      client.delete(credentials, "webhooks/#{id}")
+      client.delete("webhooks/#{id}")
     end
   end
 end
