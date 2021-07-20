@@ -12,11 +12,13 @@ module ShopifyClient
 
       delete_webhook = DeleteWebhook.new
 
-      webhooks.map do |webhook|
-        Thread.new do
-          delete_webhook.(client, webhook['id'])
-        end
-      end.map(&:value)
+      Async do
+        webhooks.map do |webhook|
+          Async do
+            delete_webhook.(client, webhook['id'])
+          end
+        end.map(&:wait)
+      end.wait
     end
   end
 end

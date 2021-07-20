@@ -1,8 +1,10 @@
 PATH
   remote: .
   specs:
-    shopify-client (0.0.3)
+    shopify-client (0.0.4)
       addressable (~> 2.7)
+      async (~> 1.29)
+      async-http-faraday (~> 0.11)
       dry-configurable (~> 0.12)
       faraday (~> 1.4)
       faraday_middleware (~> 1.0)
@@ -14,7 +16,27 @@ GEM
   specs:
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    async (1.29.2)
+      console (~> 1.10)
+      nio4r (~> 2.3)
+      timers (~> 4.1)
+    async-http (0.56.5)
+      async (>= 1.25)
+      async-io (>= 1.28)
+      async-pool (>= 0.2)
+      protocol-http (~> 0.22.0)
+      protocol-http1 (~> 0.14.0)
+      protocol-http2 (~> 0.14.0)
+    async-http-faraday (0.11.0)
+      async-http (~> 0.42)
+      faraday
+    async-io (1.32.2)
+      async
+    async-pool (0.3.8)
+      async (>= 1.25)
     concurrent-ruby (1.1.9)
+    console (1.13.1)
+      fiber-local
     diff-lcs (1.4.4)
     dotenv (2.7.6)
     dry-configurable (0.12.1)
@@ -41,8 +63,17 @@ GEM
     faraday-patron (1.0.0)
     faraday_middleware (1.0.0)
       faraday (~> 1.0)
+    fiber-local (1.0.0)
     jwt (2.2.3)
     multipart-post (2.1.1)
+    nio4r (2.5.7)
+    protocol-hpack (1.4.2)
+    protocol-http (0.22.5)
+    protocol-http1 (0.14.1)
+      protocol-http (~> 0.22)
+    protocol-http2 (0.14.2)
+      protocol-hpack (~> 1.4)
+      protocol-http (~> 0.18)
     public_suffix (4.0.6)
     rake (13.0.6)
     rspec (3.10.0)
@@ -59,6 +90,7 @@ GEM
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
     ruby2_keywords (0.0.5)
+    timers (4.3.3)
     zeitwerk (2.4.2)
 
 PLATFORMS

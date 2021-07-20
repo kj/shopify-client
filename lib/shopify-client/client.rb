@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'async/http/faraday'
 require 'faraday'
 require 'faraday_middleware'
 
@@ -18,6 +19,7 @@ module ShopifyClient
         },
         url: "https://#{myshopify_domain}/admin/api/#{ShopifyClient.config.api_version}",
       ) do |conn|
+        conn.adapter :async_http
         # Request throttling to avoid API rate limit.
         conn.use default_throttling_strategy
         # Retry for 429, too many requests.
