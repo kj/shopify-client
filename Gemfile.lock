@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shopify-client (0.0.4)
+    shopify-client (0.0.5)
       addressable (~> 2.7)
       async (~> 1.29)
       async-http-faraday (~> 0.11)
@@ -16,7 +16,7 @@ GEM
   specs:
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    async (1.29.2)
+    async (1.30.0)
       console (~> 1.10)
       nio4r (~> 2.3)
       timers (~> 4.1)

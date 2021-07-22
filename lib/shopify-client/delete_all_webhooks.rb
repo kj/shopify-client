@@ -5,20 +5,40 @@ module ShopifyClient
     # Delete any existing webhooks.
     #
     # @param client [Client]
-    #
-    # @return [Array<Hash>] response data
-    def call(client)
-      webhooks = client.get('webhooks').data['webhooks']
+    # @param ids [Array<Integer>, nil] GraphQL IDs
+    def call(client, ids: nil)
+      ids ||= client.graphql(%({
+        webhookSubscriptions(first: 50) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      })).data['data']['webhookSubscriptions']['edges'].map do |edge|
+        edge['node']['id']
+      end
 
-      delete_webhook = DeleteWebhook.new
+      return if ids.empty?
 
-      Async do
-        webhooks.map do |webhook|
-          Async do
-            delete_webhook.(client, webhook['id'])
-          end
-        end.map(&:wait)
-      end.wait
+      client.graphql(%(
+        mutation webhookSubscriptionDelete(
+          #{ids.each_with_index.map { |_, i| %(
+            $id#{i}: ID!
+          )}.join("\n")}
+        ) {
+          #{ids.each_with_index.map { |_, i| %(
+            webhookSubscriptionDelete#{i}: webhookSubscriptionDelete(id: $id#{i}) {
+              userErrors {
+                field
+                message
+              }
+            }
+          )}.join("\n")}
+        }
+      ), ids.each_with_index.each_with_object({}) do |(id, i), variables|
+        variables["id#{i}"] = id
+      end)
     end
   end
 end
