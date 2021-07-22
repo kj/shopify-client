@@ -8,7 +8,7 @@ module ShopifyClient
     # @param ids [Array<Integer>, nil] GraphQL IDs
     def call(client, ids: nil)
       ids ||= client.graphql(%({
-        webhookSubscriptions(first: 50) {
+        webhookSubscriptions(first: 100) {
           edges {
             node {
               id
