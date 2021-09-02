@@ -72,6 +72,15 @@ module ShopifyClient
         end
       when 423
         raise ShopError.new(request, self), 'Shop is locked'
+      when 430
+        # NOTE: This is an unofficial code used by Shopify. See:
+        #
+        # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
+        #
+        # It's undocumented unfortunately, but seems to be like a 429 response,
+        # except where the app is making too many API calls (rather than hitting
+        # the per store rate limit).
+        raise TooManyRequestsError.new(request, self), 'Too many requests'
       when 400..499
         raise ClientError.new(request, self)
       when 500..599
@@ -183,6 +192,8 @@ module ShopifyClient
     InvalidAccessTokenError = Class.new(ClientError)
     # The shop is frozen/locked/unavailable.
     ShopError = Class.new(ClientError)
+    # The app is making too many requests to the API.
+    TooManyRequestsError = Class.new(ClientError)
 
     # The GraphQL API always responds with a status code of 200.
     GraphQLClientError = Class.new(ClientError) do
