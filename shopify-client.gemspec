@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'addressable', '~> 2.7'
   s.add_runtime_dependency 'async', '~> 1.29'
   s.add_runtime_dependency 'async-http-faraday', '~> 0.11'
-  s.add_runtime_dependency 'dry-configurable', '~> 0.12'
+  s.add_runtime_dependency 'dry-configurable', '~> 0.13'
   s.add_runtime_dependency 'faraday', '~> 1.4'
   s.add_runtime_dependency 'faraday_middleware', '~> 1.0' # JSON middleware
   s.add_runtime_dependency 'jwt', '~> 2.2'
