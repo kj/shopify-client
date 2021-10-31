@@ -35,6 +35,9 @@ Add the gem to your 'Gemfile':
 
     gem 'shopify-client'
 
+**Warning:** There are currently **no** API stability guarantees. I am primarily
+building this gem for use in my own projects, and break things as needed.
+
 
 Setup
 -----
